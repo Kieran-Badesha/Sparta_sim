@@ -3,7 +3,7 @@ import random
 import statistics
 
 months = int(input('enter the number of months:'))
-centres_open=months//2
+centres_open = months // 2
 
 trainees = []
 centres = []
@@ -17,7 +17,7 @@ def generate_trainees():
     return trainees
 
 
-print(generate_trainees())
+
 t = sum(generate_trainees())
 print(f'The total number of trainees: {t}')
 
@@ -31,14 +31,25 @@ def generate_training_centres():
 
 print(generate_training_centres())
 print(f'The number of training centres open: {centres_open}')
-fc=[]
+item = []
+
+
 def generate_full_centres():
-    for i in trainees:
-        sum= sum +i
-        if sum<=100:
-            fc.append(sum)
+    sums=0
+    for value in trainees:
+
+        if sums <= 100:
+            sums = sums + value
+
+        elif sums > 100:
+            item.append(100)
+            sums = sums - 100
+
+    return item
 
 
+fc=generate_full_centres()
+print(f'The number of full centres are :{fc}')
 
 waiting_list = []
 
