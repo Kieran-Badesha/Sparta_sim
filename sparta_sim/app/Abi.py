@@ -1,6 +1,5 @@
-import simpy
 import random
-import statistics
+
 
 months = int(input('enter the number of months:'))
 centres_open = months // 2
@@ -38,10 +37,10 @@ def generate_full_centres():
     sums=0
     for value in trainees:
 
-        if sums <= 100:
+        if sums < 100:
             sums = sums + value
 
-        elif sums > 100:
+        elif sums >= 100:
             item.append(100)
             sums = sums - 100
 
@@ -49,6 +48,7 @@ def generate_full_centres():
 
 
 fc=generate_full_centres()
+
 print(f'The number of full centres are :{fc}')
 
 waiting_list = []
