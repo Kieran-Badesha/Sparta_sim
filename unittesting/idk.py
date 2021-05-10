@@ -30,7 +30,7 @@ def generate_training_centres(months):
         centres.append(c)
     return centres_open
 
-'''
+
 print(generate_training_centres())
 print(f'The number of training centres open: {centres_open}')
 
@@ -43,7 +43,7 @@ def generate_full_centres():
         if sum<=100:
             fc.append(sum)
 
-'''
+
 
 waiting_list = []
 
