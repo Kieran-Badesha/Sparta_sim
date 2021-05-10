@@ -1,8 +1,11 @@
 from configparser import ConfigParser
 import sys
+import os
 
+directory = os.path.dirname(__file__)
+filename = os.path.join(directory, 'config.ini')
 config_read = ConfigParser()
-config_read.read("config.ini")
+config_read.read(filename)
 
 
 # Error handling
