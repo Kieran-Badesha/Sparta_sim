@@ -1,11 +1,11 @@
 import unittest
-from user_inputs import *
+from sparta_sim.app.refactored_user_input import *
 
 class test_user_input(unittest.TestCase):
 
     def test_duration(self):
-        self.assertIsInstance(length, int)
+        self.assertIsInstance(duration_of_sim, int)
 
     def test_name(self):
-        self.assertIsInstance(name, str)
+        self.assertIsInstance(user, str)
 
