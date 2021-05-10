@@ -21,14 +21,16 @@ Sparta Sim is a simulation tool that allows Sparta Stakeholders and Directors to
 ---
 To install sparta_sim, run the following command:
 
-```$ python -m pip install {appname}```
+```$ python -m pip install sparta_sim```
 
 
 ## Instructions For Use
 ---
-To run sparta_sim, run the following command:
+Open the :gear:`config.ini` file within the `{app}` folder, and input your desired simulation length.
 
-```$ python -m {appname}```
+Then to run sparta_sim, run the following command:
+
+```$ python -m {app}```
 
 
 ## Contributors
@@ -40,6 +42,7 @@ To run sparta_sim, run the following command:
 - [Abirame Kumarathasan](https://www.github.com/AB1RAME)
 - [Edward Blundell](https://www.github.com/EBlundellSparta)
 - [Arcan Abdo](https://www.github.com/ArcanAbdo)
+- [Thomas Woodbridge](https://www.github.com/tomwoodbridge)
 
 
 ## Acknowledgements
