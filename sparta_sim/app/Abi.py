@@ -1,5 +1,6 @@
 import random
 
+
 months = int(input('enter the number of months:'))
 centres_open = months // 2
 
@@ -12,6 +13,7 @@ def generate_trainees():
     for m in range(0, months):
         trainees_per_month = random.randint(20, 30)
         trainees.append(trainees_per_month)
+
     print(trainees)
     return trainees
 
@@ -67,6 +69,7 @@ waiting_list = []
 
 def waiting_trainees():
     return sum(waiting_list)
+
 
 
 # surplus trainees added to the waiting list
