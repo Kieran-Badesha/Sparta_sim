@@ -1,5 +1,5 @@
 import unittest
-import idk
+from unittesting import idk
 
 
 class TestIdk(unittest.TestCase):
