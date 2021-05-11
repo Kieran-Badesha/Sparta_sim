@@ -1,5 +1,5 @@
 import unittest
-# from sparta_sim.app import Abi
+from sparta_sim.app import Abi
 from sparta_sim.app import config_input
 # from unittesting import idk
 
@@ -18,7 +18,7 @@ class TestIdk(unittest.TestCase):
     #         self.assertIn(number, list(range(20, 31)))
     #         return number
     """
-    """
+
     def test_generate_trainees(self):
         for number in Abi.generate_trainees():
             self.assertIn(Abi, list(range(20, 31)))
@@ -57,7 +57,7 @@ class TestIdk(unittest.TestCase):
         for values in centres_dictionary:
             if the_number_of_keys * 100 == number of trainees:
                 self.assertNotEqual(Abi.waiting_trainees('months'), 0)
-"""
+
     def test_config_input(self):
         self.assertRaises(ValueError, config_input.months, 'k')
         self.assertRaises(ValueError, config_input.years, 'k')
