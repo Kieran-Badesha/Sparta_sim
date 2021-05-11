@@ -1,5 +1,5 @@
 import random
-from config_input import total_time
+from sparta_sim.app.config_input import total_time
 
 months = total_time
 centres_open = months // 2
