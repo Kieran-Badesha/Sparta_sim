@@ -1,7 +1,7 @@
 import random
+from config_input import total_time
 
-
-months = int(input('enter the number of months:'))
+months = total_time
 centres_open = months // 2
 
 trainees = []
@@ -71,7 +71,6 @@ def waiting_trainees():
     return sum(waiting_list)
 
 
-
 # surplus trainees added to the waiting list
 if t > centres_open * 100:
     surplus_trainees = t - (centres_open * 100)
@@ -79,4 +78,26 @@ if t > centres_open * 100:
 # this is just a placeholder for the code
 else:
     pass
-print(waiting_list)
+print(f'The number of trainees in the waiting list are: {waiting_list}')
+
+# generate the populus of each centres
+
+
+centre = {}
+while t > 0:
+    for i in range(1, centres_open + 1):
+        if t > 100:
+            centre[i] = 100
+            t = t - 100
+        elif t < 100:
+            centre[i] = t
+            t = 0
+
+print(f'The populous of the centres are : {centre}')
+co=centres_open
+for i in range(1,centres_open+1):
+    if co/6>1:
+        centre.pop(i)
+        co=co-1
+
+print(f'the remaining centres open are : {centre}')
