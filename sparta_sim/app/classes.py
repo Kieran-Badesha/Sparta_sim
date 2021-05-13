@@ -1,8 +1,5 @@
 from numpy.random import binomial
 
-# Sim Class
-class Simulation:
-    pass
 # Academy Classes
 
 class Academy:
@@ -62,8 +59,7 @@ class Academy:
                     self.__trainees[group][trainees]['Months Trained'] += 1
                 
         self.__update_trainee_count()
-        
-            
+                
     def get_finished_trainees(self):
         return sum(self.__finished_trainees.values())
     
