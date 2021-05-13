@@ -1,7 +1,7 @@
 from numpy.random import binomial
 
-# Academy Classes
 
+# Academy Classes
 class Academy:
     def __init__(self):
         self.__trainees = {}
@@ -15,66 +15,67 @@ class Academy:
         self.__total_trainees = 0
         self.__capacity = 100
 
-    def update_trainees(self, trainee_dict: dict, month: int):
+    def update_trainees(self, trainee_list: list, month: int):
         self.queued_trainees = None
-        trainee_dict_total = sum(count['Count'] 
-                                for count in trainee_dict.values()
+        trainee_list_total = sum(count.get_trainee_count()
+                                for count in trainee_list
                                 )
         spaces = self.__capacity - self.__total_trainees
 
-        if trainee_dict_total > spaces:
-            self.__trainees[f'group_{month}'] = {}
+        if trainee_list_total > spaces:
+            self.__trainees[f'group_{month}'] = []
 
             used_group = []
 
-            for trainee in trainee_dict:
+            for trainee in range(len(trainee_list)):
 
-                if (spaces - trainee_dict[trainee]['Count']) >= 0:
+                if (spaces - trainee_list[trainee].get_trainee_count()) >= 0:
                     self.__trainees[f'group_{month}'][trainee] = (
-                                                        trainee_dict[trainee])
+                                                        trainee_list[trainee])
 
-                    spaces -= trainee_dict[trainee]['Count']
+                    spaces -= trainee_list[trainee].get_trainee_count()
                     used_group.append(trainee)
             
-            for group in used_group:
-                trainee_dict.pop(group)
-            
-            self.queued_trainees = trainee_dict
+                       
+            self.queued_trainees = [trainee 
+                                    for i, trainee in enumerate(trainee_list) 
+                                    if i not in used_group]
 
         else:
-            self.__trainees[f'group_{month}'] = trainee_dict
-    
+            self.__trainees[f'group_{month}'] = trainee_list
+
     def increment_trainees(self):
         for group in self.__trainees.keys():
             
-            for trainees in self.__trainees[group].keys():
+            for trainees in range(len(self.__trainees[group])):
 
-                if self.__trainees[group][trainees]['Months Trained'] == 11:
-                    self.__finished_trainees[trainees] += (
-                                    self.__trainees[group][trainees]['Count'])
+                if self.__trainees[group][trainees].get_trained_months() == 11:
+                    name = self.__trainees[group][trainees].__class__.__name__
+                    self.__finished_trainees[name] += (
+                        self.__trainees[group][trainees].get_trainee_count())
 
-                    self.__trainees[group][trainees]['Months Trained'] += 1
+                    self.__trainees[group][trainees].increment_training()
                 
-                elif self.__trainees[group][trainees]['Months Trained'] < 11:
-                    self.__trainees[group][trainees]['Months Trained'] += 1
+                elif self.__trainees[group][trainees].get_trained_months() < 11:
+                    self.__trainees[group][trainees].increment_training()
                 
         self.__update_trainee_count()
-                
+          
     def get_finished_trainees(self):
         return sum(self.__finished_trainees.values())
     
     def get_trainees(self):
         return self.__trainees
-    
+
     def __update_trainee_count(self):
         self.__total_trainees = 0
         for group in self.__trainees.keys():
 
-            for trainees in self.__trainees[group].keys():
+            for trainees in range(len(self.__trainees[group])):
 
-                if self.__trainees[group][trainees]['Months Trained'] != 12: 
+                if self.__trainees[group][trainees].get_trained_months() != 12: 
                     self.__total_trainees += (
-                                    self.__trainees[group][trainees]['Count']) 
+                        self.__trainees[group][trainees].get_trainee_count()) 
 
     def get_trainee_count(self):
         self.__update_trainee_count()
@@ -117,17 +118,80 @@ def trainee_generator(min_trainees, max_trainees):
     if num_of_trainees > max_trainees:
         num_of_trainees = max_trainees
 
-    trainees = {}
+    trainees = []
 
     for course, prob in course_probabilities.items():
-        x = binomial(num_of_trainees, prob)
-
-        while x == 0:
             x = binomial(num_of_trainees, prob)
 
-        num_of_trainees -= x
+            while x == 0:
+                x = binomial(num_of_trainees, prob)
 
-        trainees[course] = {'Count': x,
-                            'Months Trained': 0}
+            num_of_trainees -= x
+
+            if course == 'Java':
+                trainees.append(Java(x))
+            elif course == 'Data':
+                trainees.append(Data(x))
+            elif course == 'CSharp':
+                trainees.append(CSharp(x))
+            elif course == 'DevOps':
+                trainees.append(DevOps(x))
+            elif course == 'Business':
+                trainees.append(Business(x))   
 
     return trainees
+
+
+class Trainee:
+    def __init__(self, number_of_trainees) -> None:
+        self.__trained_months = 11
+        self.__trainee_count = number_of_trainees
+
+    def increment_training(self):
+        self.__trained_months += 1
+        
+    def get_trainee_count(self):
+        return self.__trainee_count
+    
+    def update_trainee_count(self, amount):
+        self.__trainee_count += amount
+    
+    def get_trained_months(self):
+        return self.__trained_months
+
+    def __repr__(self) -> str:
+        return (f'{self.__class__.__name__}, {self.get_trainee_count()}, '
+                f'{self.get_trained_months()} months;')
+
+
+class Java(Trainee):
+    def __init__(self, number_of_trainees) -> None:
+        super().__init__(number_of_trainees)
+
+
+class DevOps(Trainee):
+    def __init__(self, number_of_trainees) -> None:
+        super().__init__(number_of_trainees)
+
+
+class CSharp(Trainee):
+    def __init__(self, number_of_trainees) -> None:
+        super().__init__(number_of_trainees)
+
+
+class Data(Trainee):
+    def __init__(self, number_of_trainees) -> None:
+        super().__init__(number_of_trainees)
+
+
+class Business(Trainee):
+    def __init__(self, number_of_trainees) -> None:
+        super().__init__(number_of_trainees)
+
+
+print(t:=trainee_generator(20, 30))
+a = Academy()
+a.update_trainees(t, 1)
+print(a.get_trainees())
+a.increment_trainees()
+print(a.get_trainees())

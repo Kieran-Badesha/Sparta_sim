@@ -1,39 +1,6 @@
 from numpy.random import binomial
 from pprint import pprint
-
-
-def trainee_generator(min_trainees, max_trainees):
-    trial = []
-    course_probabilities = {
-                            'Java': 0.2,
-                            'Data': 0.25,
-                            'CSharp': 1/3,
-                            'DevOps': 0.5,
-                            'Business': 1
-                            }
-
-    trainee_range = max_trainees - min_trainees
-    trainees_per_month = int(binomial(n=trainee_range, p=0.5, size=1))
-    num_of_trainees = min_trainees + trainees_per_month
-
-    if num_of_trainees > max_trainees:
-        num_of_trainees = max_trainees
-
-    trainees = {}
-
-    for course, prob in course_probabilities.items():
-        x = binomial(num_of_trainees, prob)
-
-        while x == 0:
-            x = binomial(num_of_trainees, prob)
-
-        num_of_trainees -= x
-        trial.append(x)
-
-        trainees[course] = {'Count': [x]
-                            }
-
-    return trainees
+from classes import trainee_generator
 
 
 def placing_trainees(months):
