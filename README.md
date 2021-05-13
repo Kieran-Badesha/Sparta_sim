@@ -26,11 +26,12 @@ To install sparta_sim, run the following command:
 
 ## Instructions For Use
 ---
-Open the :gear:`config.ini` file within the `{app}` folder, and input your desired simulation length.
+Open the :gear:`config.ini` file within the `runsim` folder, and input your desired simulation length.
 
 Then to run sparta_sim, run the following command:
 
-```$ python -m {app}```
+```$ python -m runsim```
+or you can double-click on the :running:`runsim.bat` file
 
 
 ## Contributors

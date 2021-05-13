@@ -4,16 +4,16 @@ from numpy.random import binomial
 # Academy Classes
 class Academy:
     def __init__(self):
-        self.__trainees = {}
-        self.__finished_trainees = {
+        self.trainees = {}
+        self.finished_trainees = {
                                     'Java': 0,
                                     'Data': 0,
                                     'CSharp': 0,
                                     'DevOps': 0,
                                     'Business': 0
                                     }
-        self.__total_trainees = 0
-        self.__capacity = 100
+        self.total_trainees = 0
+        self.capacity = 100
         self.queued_trainees = None
 
     def update_trainees(self, trainee_list: list, month: int):
@@ -21,17 +21,17 @@ class Academy:
         trainee_list_total = sum(count.get_trainee_count()
                                 for count in trainee_list
                                 )
-        spaces = self.__capacity - self.__total_trainees
+        spaces = self.capacity - self.total_trainees
 
         if trainee_list_total > spaces:
-            self.__trainees[f'group_{month}'] = []
+            self.trainees[f'group_{month}'] = []
 
             used_group = []
 
             for trainee in range(0, len(trainee_list)):
 
                 if (spaces - trainee_list[trainee].get_trainee_count()) >= 0:
-                    self.__trainees[f'group_{month}'].append(
+                    self.trainees[f'group_{month}'].append(
                                                         trainee_list[trainee])
 
                     spaces -= trainee_list[trainee].get_trainee_count()
@@ -43,49 +43,65 @@ class Academy:
                                     if i not in used_group]
 
         else:
-            self.__trainees[f'group_{month}'] = trainee_list
+            self.trainees[f'group_{month}'] = trainee_list
         
-        self.__update_trainee_count()
+        self.update_trainee_count()
 
     def increment_trainees(self):
-        for group in self.__trainees.keys():
+        for group in self.trainees.keys():
             
-            for trainees in range(len(self.__trainees[group])):
+            for trainees in range(len(self.trainees[group])):
 
-                if self.__trainees[group][trainees].get_trained_months() == 11:
-                    name = self.__trainees[group][trainees].__class__.__name__
-                    self.__finished_trainees[name] += (
-                        self.__trainees[group][trainees].get_trainee_count())
+                if self.trainees[group][trainees].get_trained_months() == 11:
+                    name = self.trainees[group][trainees].__class__.__name__
+                    self.finished_trainees[name] += (
+                        self.trainees[group][trainees].get_trainee_count())
 
-                    self.__trainees[group][trainees].increment_training()
+                    self.trainees[group][trainees].increment_training()
                 
-                elif self.__trainees[group][trainees].get_trained_months() < 11:
-                    self.__trainees[group][trainees].increment_training()
+                elif self.trainees[group][trainees].get_trained_months() < 11:
+                    self.trainees[group][trainees].increment_training()
                 
-        self.__update_trainee_count()
+        self.update_trainee_count()
           
     def get_finished_trainees(self):
-        return self.__finished_trainees
+        return self.finished_trainees
     
     def get_trainees(self):
-        return self.__trainees
+        return self.trainees
 
-    def __update_trainee_count(self):
-        self.__total_trainees = 0
-        for group in self.__trainees.keys():
+    def update_trainee_count(self):
+        self.total_trainees = 0
+        finished_groups = []
+        for group in self.trainees.keys():
 
-            for trainees in range(len(self.__trainees[group])):
+            for trainees in range(len(self.trainees[group])):
 
-                if self.__trainees[group][trainees].get_trained_months() != 12: 
-                    self.__total_trainees += (
-                        self.__trainees[group][trainees].get_trainee_count()) 
+                if self.trainees[group][trainees].get_trained_months() != 12: 
+                    self.total_trainees += (
+                        self.trainees[group][trainees].get_trainee_count())
+                
+                else:
+                    finished_groups.append(group)
 
+        for group in finished_groups:
+            if group in self.trainees:
+                del self.trainees[group]
+
+            
     def get_trainee_count(self):
-        self.__update_trainee_count()
-        return self.__total_trainees
+        self.update_trainee_count()
+        return self.total_trainees
     
     def get_queue(self):
         return self.queued_trainees
+    
+    def __repr__(self) -> str:
+        values = []
+        for key, value in self.trainees.items():
+            values.append(f'{key}: {value}')
+        values = '\n\t'.join(values)
+        return f'{self.__class__.__name__}:\n\t{values}'
     
 
 class TrainingHub(Academy):
@@ -95,51 +111,53 @@ class TrainingHub(Academy):
 class Bootcamp(Academy):
     def __init__(self):
         super().__init__()
-        self.__capacity = 500
+        self.capacity = 500
 
 class TechCentre(Academy):
     def __init__(self, trainee_type):
         super().__init__()
-        self.__capacity = 200
+        self.capacity = 200
         self.__trainee_type = trainee_type
-        self.__total_trainees = 0
-        self.__trainees = {}
    
     def update_trainees(self, trainee_list: list, month: int):
         trainee_list = [group 
                         for i, group in enumerate(trainee_list)
-                        if str(trainee_list[i].__class__.__name__) == self.__trainee_type]
+                        if (str(trainee_list[i].__class__.__name__) 
+                                                    == self.__trainee_type)]
 
         self.queued_trainees = [group 
                                 for i, group in enumerate(trainee_list)
-                                if str(trainee_list[i].__class__.__name__) != self.__trainee_type]
+                                if (str(trainee_list[i].__class__.__name__) 
+                                                    != self.__trainee_type)]
 
         trainee_list_total = sum(count.get_trainee_count()
                                 for count in trainee_list
                                 )
-        spaces = self.__capacity - self.__total_trainees
+        spaces = self.capacity - self.total_trainees
 
         if trainee_list_total > spaces:
-            self.__trainees[f'group_{month}'] = []
+            self.trainees[f'group_{month}'] = []
 
             used_group = []
 
             for trainee in range(len(trainee_list)):
 
                 if (spaces - trainee_list[trainee].get_trainee_count()) >= 0:
-                    self.__trainees[f'group_{month}'].append(
+                    self.trainees[f'group_{month}'].append(
                                                         trainee_list[trainee])
 
                     spaces -= trainee_list[trainee].get_trainee_count()
                     used_group.append(trainee)
             
                        
-            self.queued_trainees = [trainee 
+            self.queued_trainees.append(trainee 
                                     for i, trainee in enumerate(trainee_list) 
-                                    if i not in used_group]
+                                    if i not in used_group)
 
         else:
-            self.__trainees[f'group_{month}'] = trainee_list
+            self.trainees[f'group_{month}'] = trainee_list
+        
+        self.update_trainee_count()
 
 
 # Trainee Generator
@@ -229,4 +247,3 @@ class Data(Trainee):
 class Business(Trainee):
     def __init__(self, number_of_trainees) -> None:
         super().__init__(number_of_trainees)
-

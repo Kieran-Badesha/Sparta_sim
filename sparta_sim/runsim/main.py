@@ -1,6 +1,6 @@
 from typing import Union
-from config_input import total_time, min_trainees, max_trainees
-from classes import TrainingHub, Bootcamp, TechCentre, trainee_generator
+from runsim.config_input import total_time, min_trainees, max_trainees
+from runsim.classes import TrainingHub, Bootcamp, TechCentre, trainee_generator
 from random import choice
 
 
@@ -35,13 +35,24 @@ def main():
                 trainees = choice(trainee_type)
                 academy_list.append(TechCentre(trainees))
 
-        fill_academys(academy_list, months)
+        generated_trainees = trainee_generator(min_trainees, max_trainees)
+        
+        trainee_list = generated_trainees + queued_trainees
+        
+        fill_academys(academy_list, months, trainee_list)
 
         finished_trainees, queued_trainees = increment_academys(academy_list,
                                                         finished_trainees, 
                                                         queued_trainees)
-
-
+    
+    print('List of Academies:\n')
+    output_objects(academy_list)
+    print('\nAmount of Finished Trainees:')
+    print(finished_trainees)
+    print('\nQueued Trainees: ')
+    output_objects(queued_trainees)
+        
+        
 def increment_academys(academy_list: list, finished_trainees: dict, 
             queued_trainees: list) -> list and dict:
     for academy in academy_list:
@@ -55,14 +66,15 @@ def increment_academys(academy_list: list, finished_trainees: dict,
         if queued_list:
             for group in queued_list:
                 queued_trainees.append(group)
-    
+            
     return finished_trainees, queued_trainees
 
 
-def fill_academys(academy_list: list, months: int) -> None:
-    trainee_list = trainee_generator(min_trainees, max_trainees)
+def fill_academys(academy_list: list, months: int, trainee_list: list) -> None:
     placed = choice(academy_list)
     placed.update_trainees(trainee_list, months)
 
 
-main()
+def output_objects(item_list: list):
+    for item in item_list:
+        print(f'{item}')
