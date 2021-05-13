@@ -85,6 +85,7 @@ class Academy:
     
     def get_queue(self):
         return self.queued_trainees
+    
 
 class TrainingHub(Academy):
     def __init__(self):
