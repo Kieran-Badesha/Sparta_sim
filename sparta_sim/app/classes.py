@@ -27,10 +27,10 @@ class Academy:
 
             used_group = []
 
-            for trainee in range(len(trainee_list)):
+            for trainee in range(0, len(trainee_list)):
 
                 if (spaces - trainee_list[trainee].get_trainee_count()) >= 0:
-                    self.__trainees[f'group_{month}'][trainee] = (
+                    self.__trainees[f'group_{month}'].append(
                                                         trainee_list[trainee])
 
                     spaces -= trainee_list[trainee].get_trainee_count()
@@ -144,7 +144,7 @@ def trainee_generator(min_trainees, max_trainees):
 
 class Trainee:
     def __init__(self, number_of_trainees) -> None:
-        self.__trained_months = 11
+        self.__trained_months = 0
         self.__trainee_count = number_of_trainees
 
     def increment_training(self):
@@ -189,9 +189,9 @@ class Business(Trainee):
         super().__init__(number_of_trainees)
 
 
-print(t:=trainee_generator(20, 30))
-a = Academy()
-a.update_trainees(t, 1)
-print(a.get_trainees())
-a.increment_trainees()
-print(a.get_trainees())
+# print(t:=trainee_generator(20, 30))
+# a = Academy()
+# a.update_trainees(t, 1)
+# print(a.get_trainees())
+# a.increment_trainees()
+# print(a.get_trainees())
