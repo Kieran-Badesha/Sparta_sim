@@ -43,6 +43,8 @@ class Academy:
 
         else:
             self.__trainees[f'group_{month}'] = trainee_list
+        
+        self.__update_trainee_count()
 
     def increment_trainees(self):
         for group in self.__trainees.keys():
@@ -62,7 +64,7 @@ class Academy:
         self.__update_trainee_count()
           
     def get_finished_trainees(self):
-        return sum(self.__finished_trainees.values())
+        return self.__finished_trainees
     
     def get_trainees(self):
         return self.__trainees
@@ -98,6 +100,39 @@ class TechCentre(Academy):
         super().__init__()
         self.__capacity = 200
         self.__trainee_type = trainee_type
+   
+    def update_trainees(self, trainee_list: list, month: int):
+        trainee_list = [group 
+                        for group in trainee_list 
+                        if trainee_list[group].__class__.__name__ == self.__trainee_type]
+
+        self.queued_trainees = None
+        trainee_list_total = sum(count.get_trainee_count()
+                                for count in trainee_list
+                                )
+        spaces = self.__capacity - self.__total_trainees
+
+        if trainee_list_total > spaces:
+            self.__trainees[f'group_{month}'] = []
+
+            used_group = []
+
+            for trainee in range(len(trainee_list)):
+
+                if (spaces - trainee_list[trainee].get_trainee_count()) >= 0:
+                    self.__trainees[f'group_{month}'].append(
+                                                        trainee_list[trainee])
+
+                    spaces -= trainee_list[trainee].get_trainee_count()
+                    used_group.append(trainee)
+            
+                       
+            self.queued_trainees = [trainee 
+                                    for i, trainee in enumerate(trainee_list) 
+                                    if i not in used_group]
+
+        else:
+            self.__trainees[f'group_{month}'] = trainee_list
 
 
 # Trainee Generator
@@ -188,10 +223,3 @@ class Business(Trainee):
     def __init__(self, number_of_trainees) -> None:
         super().__init__(number_of_trainees)
 
-
-# print(t:=trainee_generator(20, 30))
-# a = Academy()
-# a.update_trainees(t, 1)
-# print(a.get_trainees())
-# a.increment_trainees()
-# print(a.get_trainees())

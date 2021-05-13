@@ -18,4 +18,3 @@ try:
 except ValueError:
     print("There is a ValueError, please input in numerical values")
     sys.exit(0)
-
