@@ -62,7 +62,7 @@ class Academy:
         self.__update_trainee_count()
           
     def get_finished_trainees(self):
-        return sum(self.__finished_trainees.values())
+        return self.__finished_trainees
     
     def get_trainees(self):
         return self.__trainees
@@ -187,11 +187,3 @@ class Data(Trainee):
 class Business(Trainee):
     def __init__(self, number_of_trainees) -> None:
         super().__init__(number_of_trainees)
-
-
-print(t:=trainee_generator(20, 30))
-a = Academy()
-a.update_trainees(t, 1)
-print(a.get_trainees())
-a.increment_trainees()
-print(a.get_trainees())
