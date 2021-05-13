@@ -1,6 +1,8 @@
-from sparta_sim.app.config_input import TrainingHub, Bootcamp, TechCentre, trainee_generator
-from sparta_sim.app.classes import total_time, min_trainees, max_trainees
+from typing import Union
+from config_input import total_time, min_trainees, max_trainees
+from classes import TrainingHub, Bootcamp, TechCentre, trainee_generator
 from random import choice
+
 
 def main():
     academy_list = []
@@ -8,6 +10,14 @@ def main():
     num_of_hub = 0
     num_of_bootcamp = 0
     trainee_type = ['Java', 'Csharp', 'DevOps', 'Data', 'Business']
+    finished_trainees = {
+                        'Java': 0,
+                        'Data': 0,
+                        'CSharp': 0,
+                        'DevOps': 0,
+                        'Business': 0
+                        }
+    queued_trainees = []
 
     for months in range(1, total_time + 1):
         if (months + 1) % 2 == 0:
@@ -25,11 +35,34 @@ def main():
                 trainees = choice(trainee_type)
                 academy_list.append(TechCentre(trainees))
 
-        trainee_list = trainee_generator(min_trainees, max_trainees)
-        placed = choice(academy_list)
-        placed.update_trainees(trainee_list, months)
-        
-        for academy in academy_list:
-            academy.increment_trainees()
-            print(academy.get_trainees())
+        fill_academys(academy_list, months)
 
+        finished_trainees, queued_trainees = increment_academys(academy_list,
+                                                        finished_trainees, 
+                                                        queued_trainees)
+
+
+def increment_academys(academy_list: list, finished_trainees: dict, 
+            queued_trainees: list) -> list and dict:
+    for academy in academy_list:
+        academy.increment_trainees()
+        finished_dict = academy.get_finished_trainees()
+        queued_list = academy.get_queue()
+
+        for group, count in finished_dict.items():
+            finished_trainees[group] += count
+        
+        if queued_list:
+            for group in queued_list:
+                queued_trainees.append(group)
+    
+    return finished_trainees, queued_trainees
+
+
+def fill_academys(academy_list: list, months: int) -> None:
+    trainee_list = trainee_generator(min_trainees, max_trainees)
+    placed = choice(academy_list)
+    placed.update_trainees(trainee_list, months)
+
+
+main()
