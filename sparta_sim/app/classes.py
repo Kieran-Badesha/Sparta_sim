@@ -100,11 +100,13 @@ class TechCentre(Academy):
         super().__init__()
         self.__capacity = 200
         self.__trainee_type = trainee_type
+        self.__total_trainees = 0
+        self.__trainees = {}
    
     def update_trainees(self, trainee_list: list, month: int):
         trainee_list = [group 
-                        for group in trainee_list 
-                        if trainee_list[group].__class__.__name__ == self.__trainee_type]
+                        for i, group in enumerate(trainee_list)
+                        if str(trainee_list[i].__class__.__name__) == self.__trainee_type]
 
         self.queued_trainees = None
         trainee_list_total = sum(count.get_trainee_count()
